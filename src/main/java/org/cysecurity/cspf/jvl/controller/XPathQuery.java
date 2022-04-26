@@ -13,10 +13,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactory;
+import javax.xml.xpath.XPathVariableResolver;
 
 import org.w3c.dom.Document;
 /**
@@ -34,7 +37,7 @@ public class XPathQuery extends HttpServlet {
         try {
             String user=request.getParameter("username");
             String pass=request.getParameter("password");
-            
+           
             //XML Source:
             String XML_SOURCE=getServletContext().getRealPath("/WEB-INF/users.xml");
             
@@ -48,9 +51,27 @@ public class XPathQuery extends HttpServlet {
             
             //XPath Query:
             String xPression="/users/user[username='"+user+"' and password='"+pass+"']/name";
+           
+        // Good expression
+        String xPression1 = "/users/user[@name=$user and @pass=$pass]";
+        xPath.setXPathVariableResolver(v -> {
+        switch (v.getLocalPart()) {
+            case "user":
+                return user;
+            case "pass":
+                return pass;
+            default:
+                throw new IllegalArgumentException();
+            }
+        });
+
+
             
+           xPath.evaluate(xPression1, xDoc, XPathConstants.BOOLEAN);
+           String name=xPath.compile(xPression1).evaluate(xDoc);
+
             //running Xpath query:
-            String name=xPath.compile(xPression).evaluate(xDoc);
+            //String name=xPath.compile(xPression).evaluate(xDoc);
             out.println(name);
             if(name.isEmpty())
             {
