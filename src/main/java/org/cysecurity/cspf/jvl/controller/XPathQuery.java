@@ -52,23 +52,9 @@ public class XPathQuery extends HttpServlet {
             //XPath Query:
             String xPression="/users/user[username='"+user+"' and password='"+pass+"']/name";
            
-        // Good expression
-        String xPression1 = "/users/user[@name=$user and @pass=$pass]";
-        xPath.setXPathVariableResolver(v -> {
-        switch (v.getLocalPart()) {
-            case "user":
-                return user;
-            case "pass":
-                return pass;
-            default:
-                throw new IllegalArgumentException();
-            }
-        });
-
-
-            
-           xPath.evaluate(xPression1, xDoc, XPathConstants.BOOLEAN);
-           String name=xPath.compile(xPression1).evaluate(xDoc);
+      
+           xPath.evaluate(xPression, xDoc, XPathConstants.BOOLEAN);
+           String name=xPath.compile(xPression).evaluate(xDoc);
 
             //running Xpath query:
             //String name=xPath.compile(xPression).evaluate(xDoc);
