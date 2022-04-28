@@ -7,7 +7,7 @@ registries:
     password: ${{secrets.JFORG_TOKEN}}
  
 updates:
-  - package-ecosystem: "maven"
+  - package-ecosystem: "maven "
     directory: "/"
     registries:
       - maven-artifactory
