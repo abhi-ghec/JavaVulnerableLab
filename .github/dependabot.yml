@@ -3,7 +3,7 @@ registries:
   maven-artifactory:
     type: maven-repository
     url: https://abhiemu.jfrog.io/artifactory/abhiemu/
-    username: ${{secrets.JFROG_USER}}
+    #username: ${{secrets.JFROG_USER}}
     password: ${{secrets.JFORG_TOKEN}}
  
 updates:
